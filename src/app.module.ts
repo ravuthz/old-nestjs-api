@@ -7,12 +7,13 @@ import { UserModule } from './user/user.module';
 
 import app from './config/app';
 import database from './config/database';
+import swagger from './config/swagger';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [app, database],
+      load: [app, database, swagger],
     }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
