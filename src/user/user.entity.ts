@@ -1,6 +1,7 @@
 import { Entity, PrimaryGeneratedColumn, Column, CreateDateColumn, UpdateDateColumn, BeforeInsert, BeforeUpdate } from "typeorm";
 import * as bcrypt from 'bcrypt';
 
+type Gender = 'm' | 'f';
 @Entity('users')
 export class UserEntity {
     @PrimaryGeneratedColumn()
@@ -27,6 +28,12 @@ export class UserEntity {
     @UpdateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
     updated_at: Date;
 
+    @Column({ type: 'date', nullable: true })
+    dob: Date|undefined;
+
+    @Column({ name: 'gender', type: 'enum', enum: ['m', 'f'], nullable: true })
+    gender: Gender|undefined;
+
     @BeforeInsert()
     async hashPassword() {
         this.password = await bcrypt.hash(this.password || '123123', 10);
@@ -38,4 +45,5 @@ export class UserEntity {
             this.password = await bcrypt.hash(this.password, 10);
         }
     }
+
 }
